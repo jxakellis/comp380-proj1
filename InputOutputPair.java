@@ -1,8 +1,8 @@
-public class TrainingPair {
+public class InputOutputPair {
     int[][] inputVector;
     OutputClassification outputClassification;
 
-    public TrainingPair(int inputRowDimensions, int inputColumnDimensions, int outputDimensions) {
+    public InputOutputPair(int inputRowDimensions, int inputColumnDimensions, int outputDimensions) {
         inputVector = new int[inputRowDimensions][inputColumnDimensions];
         outputClassification = new OutputClassification(outputDimensions);
     }

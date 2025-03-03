@@ -1,5 +1,9 @@
-enum ProgramFunction {
+public enum ProgramFunction {
     TRAIN,
     TEST,
-    QUIT
+    QUIT;
+
+    private ProgramFunction() {
+
+    }
 }
