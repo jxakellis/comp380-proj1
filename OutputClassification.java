@@ -1,26 +1,26 @@
 public class OutputClassification {
-    public int[] outputNeuronValues;
+    public int[] values;
 
-    public OutputClassification(int outputDimension) {
-        outputNeuronValues = new int[outputDimension];
+    public OutputClassification(int outputDimensions) {
+        values = new int[outputDimensions];
     }
 
     public String getClassification() {
         String classifiation = "undecided";
-        Integer indexOfActivatedOutputNeuron = null;
+        Integer indexOfActivatedOutput = null;
 
-        for (int i = 0; i < outputNeuronValues.length; i++) {
-            int outputNeuronValue = outputNeuronValues[i];
+        for (int i = 0; i < values.length; i++) {
+            int value = values[i];
 
             // Each output neuron should be positive or negative for activation
-            if (outputNeuronValue != -1 && outputNeuronValue != 1) {
+            if (value != -1 && value != 1 && value != 0) {
                 return classifiation;
             }
 
-            if (outputNeuronValue == 1) {
+            if (value == 1) {
                 // no other neuron has been activated before this one
-                if (indexOfActivatedOutputNeuron == null) {
-                    indexOfActivatedOutputNeuron = i;
+                if (indexOfActivatedOutput == null) {
+                    indexOfActivatedOutput = i;
                 }
                 else {
                     // multiple neurons activated, so undecided
@@ -29,12 +29,12 @@ public class OutputClassification {
             }
         }
 
-        if (indexOfActivatedOutputNeuron == null) {
+        if (indexOfActivatedOutput == null) {
             return classifiation;
         }
 
         // Convert index to character, e.g. index 0 == a, 1 == b, 2 == c, etc...
-        classifiation = (char) ('a' + indexOfActivatedOutputNeuron) + "";
+        classifiation = (char) ('a' + indexOfActivatedOutput) + "";
 
         return classifiation;
     }

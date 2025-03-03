@@ -2,25 +2,19 @@ import java.io.*;
 import java.util.Scanner;
 
 /*
- * TODO
- *  1) A brief summary of the program,
-    2) author’s names and
-    3) last date modified
- */
-
-enum ProgramFunction {
-    TRAIN,
-    TEST,
-    QUIT
-}
+* TODO
+*  1) A brief summary of the program,
+2) author’s names and
+3) last date modified
+*/
 
 public class proj1 {
     private final static Scanner globalScanner = new Scanner(System.in);
 
     // ProgramFunction: ALL
-    private static Integer rowDimensionOfInput;
-    private static Integer columnDimensionOfInput;
-    private static Integer dimensionOfOutput;
+    private static Integer inputRowDimensions;
+    private static Integer inputColumnDimensions;
+    private static Integer outputDimensions;
     private static Integer numberOfTrainingPairs;
 
     // ProgramFunction: TRAIN
@@ -31,6 +25,7 @@ public class proj1 {
     private static Double learningRate;
     private static Double thresholdTheta;
     private static Double thresholdForWeightChanges;
+    private static TrainingPair[] trainingPairs;
 
     // ProgramFunction: TEST
     private static String inputTrainedWeightsFileName;
@@ -55,10 +50,13 @@ public class proj1 {
                 break;
             case TRAIN:
                 didSucessfullySetup = getTrainingInputsFromUser();
+                break;
             case TEST:
                 didSucessfullySetup = getTestingInputsFromUser();
+                break;
             default:
                 didSucessfullySetup = false;
+                break;
         }
 
         if (didSucessfullySetup == false) {
@@ -78,11 +76,9 @@ public class proj1 {
             }
 
             trainNet();
-        }
-        else if (programFunction == ProgramFunction.TEST) {
+        } else if (programFunction == ProgramFunction.TEST) {
             // TODO read in data for test function
         }
-
 
         askRunProgramAgain();
     }
@@ -94,9 +90,9 @@ public class proj1 {
      */
     private static void initializeVariables() {
         // Variables for All
-        rowDimensionOfInput = null;
-        columnDimensionOfInput = null;
-        dimensionOfOutput = null;
+        inputRowDimensions = null;
+        inputColumnDimensions = null;
+        outputDimensions = null;
         numberOfTrainingPairs = null;
 
         // Variables for TRAIN
@@ -107,6 +103,7 @@ public class proj1 {
         learningRate = null;
         thresholdTheta = null;
         thresholdForWeightChanges = null;
+        trainingPairs = null;
 
         // ProgramFunction: TEST
         inputTrainedWeightsFileName = null;
@@ -125,7 +122,7 @@ public class proj1 {
         System.out.println("3) Enter 3 to quit");
 
         try {
-            int input = globalScanner.nextInt();
+            int input = Integer.parseInt(globalScanner.nextLine());
             if (input == 1) {
                 return ProgramFunction.TRAIN;
             } else if (input == 2) {
@@ -152,42 +149,42 @@ public class proj1 {
 
             System.out.println(
                     "Enter 0 to initialize weights to 0, enter 1 to initialize weights to random values between -0.5 and 0.5:");
-            int weightInput = globalScanner.nextInt();
+            int weightInput = Integer.parseInt(globalScanner.nextLine());
             if (weightInput != 0 && weightInput != 1) {
                 throw new IllegalArgumentException(
-                        "The value of" + weightInput + "is not a valid input. Input value must be 0 or 1.");
+                        "The value of " + weightInput + " is not a valid input. Input value must be 0 or 1.");
             }
             randomTrainingWeights = weightInput == 0;
 
             System.out.println("Enter the maximum number of training epochs:");
-            maximumNumberOfTrainingEpochs = globalScanner.nextInt();
+            maximumNumberOfTrainingEpochs = Integer.parseInt(globalScanner.nextLine());
             if (maximumNumberOfTrainingEpochs <= 0) {
-                throw new IllegalArgumentException("The value of" + maximumNumberOfTrainingEpochs
-                        + "is not a valid input. Input value must be an integer greater than 0.");
+                throw new IllegalArgumentException("The value of " + maximumNumberOfTrainingEpochs
+                        + " is not a valid input. Input value must be an integer greater than 0.");
             }
 
             System.out.println("Enter a file name to save the trained weight values:");
             outputTrainedWeightsFileName = globalScanner.nextLine();
 
             System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0:");
-            learningRate = globalScanner.nextDouble();
+            learningRate = Double.parseDouble(globalScanner.nextLine());
             if (learningRate <= 0.0 || learningRate > 1.0) {
-                throw new IllegalArgumentException("The value of" + learningRate
-                        + "is not a valid input. Input value must be a double between (0, 1]");
+                throw new IllegalArgumentException("The value of " + learningRate
+                        + " is not a valid input. Input value must be a double between (0, 1]");
             }
 
             System.out.println("Enter the threshold theta:");
-            thresholdTheta = globalScanner.nextDouble();
+            thresholdTheta = Double.parseDouble(globalScanner.nextLine());
 
             System.out.println("Enter the threshold to be used for measuring weight changes:");
-            thresholdForWeightChanges = globalScanner.nextDouble();
+            thresholdForWeightChanges =  Double.parseDouble(globalScanner.nextLine());
             if (thresholdForWeightChanges <= 0.0) {
-                throw new IllegalArgumentException("The value of" + thresholdForWeightChanges
-                        + "is not a valid input. Input value must be a double greater than 0.");
+                throw new IllegalArgumentException("The value of " + thresholdForWeightChanges
+                        + " is not a valid input. Input value must be a double greater than 0.");
             }
 
         } catch (Exception e) {
-            System.out.println("Encountered an error when setting up user input variables:" + e.getMessage());
+            System.out.println("\n" + e.getMessage());
             return false;
         }
 
@@ -221,28 +218,33 @@ public class proj1 {
         try {
             BufferedReader br = new BufferedReader(new FileReader(inputTrainingDataFileName));
 
-            rowDimensionOfInput = Integer.parseInt(br.readLine());
-            columnDimensionOfInput = Integer.parseInt(br.readLine());
-            dimensionOfOutput = Integer.parseInt(br.readLine());
+            inputRowDimensions = Integer.parseInt(br.readLine());
+            inputColumnDimensions = Integer.parseInt(br.readLine());
+            outputDimensions = Integer.parseInt(br.readLine());
             numberOfTrainingPairs = Integer.parseInt(br.readLine());
 
-            for (int i = 0; i < numberOfTrainingPairs; i++) {
+            trainingPairs = new TrainingPair[numberOfTrainingPairs];
+
+            for (int trainingPairIndex = 0; trainingPairIndex < numberOfTrainingPairs; trainingPairIndex++) {
                 // Should be empty line before actual data
                 br.readLine();
-                TrainingPair tp = new TrainingPair(rowDimensionOfInput, columnDimensionOfInput, dimensionOfOutput);
+                TrainingPair tp = new TrainingPair(inputRowDimensions, inputColumnDimensions, outputDimensions);
+                trainingPairs[trainingPairIndex] = tp;
 
                 // Extract the input pattern for the training pair
-                for (int inputRow = 0; inputRow < rowDimensionOfInput; inputRow++) {
+                for (int inputRow = 0; inputRow < inputRowDimensions; inputRow++) {
                     String[] inputRowValues = br.readLine().split("\\s+");
 
-                    for (int inputColumn = 0; inputColumn < columnDimensionOfInput; inputColumn++) {
+                    for (int inputColumn = 0; inputColumn < inputColumnDimensions; inputColumn++) {
                         int inputValue = Integer.parseInt(inputRowValues[inputColumn]);
 
                         if (inputValue != 1 && inputValue != -1) {
-                            throw new IllegalArgumentException("Unable to parse dataset because it contained an illegal value of " + inputValue + " in the training set");
+                            throw new IllegalArgumentException(
+                                    "Unable to parse dataset because it contained an illegal value of " + inputValue
+                                            + " in the training set");
                         }
 
-                        tp.trainingPattern[inputRow][inputColumn] = inputValue;
+                        tp.inputVector[inputRow][inputColumn] = inputValue;
                     }
                 }
 
@@ -251,10 +253,10 @@ public class proj1 {
 
                 // Extract the output pattern for the training pair
                 String[] outputValues = br.readLine().split("\\s+");
-                for (int outputDimension = 0; outputDimension < dimensionOfOutput; outputDimension++) {
-                    int outputValue = Integer.parseInt(outputValues[outputDimension]);
+                for (int outputDimensions = 0; outputDimensions < outputDimensions; outputDimensions++) {
+                    int outputValue = Integer.parseInt(outputValues[outputDimensions]);
 
-                    tp.outputClassification.outputNeuronValues[outputDimension] = outputValue;
+                    tp.outputClassification.values[outputDimensions] = outputValue;
                 }
 
                 // Skip over text line from input (e.g. A1, C3, etc...)
@@ -282,9 +284,74 @@ public class proj1 {
         return true;
     }
 
-    private static boolean trainNet() {
+    private static void trainNet() {
+        int totalInputDimensions = inputRowDimensions * inputColumnDimensions;
+        // weights[input][output] from input i to output neuron j
+        double[][] weights = new double[outputDimensions][totalInputDimensions];
+        double[] bias = new double[outputDimensions];
 
+        // initialize weights and biases
+        for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
+            bias[outputDimension] = randomTrainingWeights ? (Math.random() - 0.5) : 0.0;
+
+            for (int totalInputDimension = 0; totalInputDimension < totalInputDimensions; totalInputDimension++) {
+                weights[outputDimension][totalInputDimension] = randomTrainingWeights ? (Math.random() - 0.5) : 0.0;
+            }
+        }
+
+        // train weights for specified number of epochs
+        for (int epoch = 0; epoch < maximumNumberOfTrainingEpochs; epoch++) {
+            double maxEpochWeightChange = 0.0;
+
+            for (TrainingPair tp : trainingPairs) {
+                int[] inputVector = tp.getFlattenedInputVector();
+                int[] outputVector = tp.outputClassification.values;
+
+                for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
+                    // Net input = Y in = B(j) + W(j,i) * X(j,i)
+                    double Yin = bias[outputDimension];
+
+                    for (int totalInputDimension = 0; totalInputDimension < totalInputDimensions; totalInputDimension++) {
+                        // add in each W(j,i) * X(j,i)
+                        Yin += weights[outputDimension][totalInputDimension] * inputVector[totalInputDimension];
+                    }
+
+                    // can be -1, 0, or 1
+                    int calculatedOutput = 0;
+                    if (Yin > thresholdTheta) {
+                        calculatedOutput = 1;
+                    } else if (Yin < thresholdTheta) {
+                        calculatedOutput = -1;
+                    }
+
+                    int expectedOutput = outputVector[outputDimension];
+
+                    // Expected didn't meet calcualted output, so update bias and weights
+                    if (calculatedOutput != expectedOutput) {
+                        // Update bias
+                        double biasChange = learningRate * expectedOutput;
+                        bias[outputDimension] += biasChange;
+
+                        maxEpochWeightChange = Math.max(maxEpochWeightChange, Math.abs(biasChange));
+
+                        for (int totalInputDimension = 0; totalInputDimension < totalInputDimensions; totalInputDimension++) {
+                            // Uppdate weights
+                            double weightChange = learningRate * expectedOutput * inputVector[totalInputDimension];
+                            weights[outputDimension][totalInputDimension] += weightChange;
+
+                            maxEpochWeightChange = Math.max(maxEpochWeightChange, Math.abs(weightChange));
+                        }
+                    }
+                }
+            }
+
+            if (maxEpochWeightChange < thresholdForWeightChanges) {
+                System.out.println("Network converged early at epoch " + epoch);
+                break;
+            }
+        }
     }
+
     /*
      * Prompts the user and asks if they want to run the program again.
      * If they say y or yes, repeats program
@@ -292,7 +359,7 @@ public class proj1 {
      * Else reprompts the user until they give a valid answer
      */
     private static void askRunProgramAgain() {
-        System.out.println("Do you want to run the program again (y for yes and n for no)?:");
+        System.out.println("\nDo you want to run the program again (y for yes and n for no)?:");
 
         String answer = globalScanner.nextLine().trim();
 
