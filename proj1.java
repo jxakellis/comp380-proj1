@@ -144,7 +144,7 @@ public class proj1 {
      */
     private static boolean getTrainingInputsFromUser() {
         try {
-            System.out.println("Enter the training data file name:");
+            System.out.println("Enter the training data file name (string):");
             inputTrainingDataFileName = globalScanner.nextLine();
 
             System.out.println(
@@ -154,37 +154,40 @@ public class proj1 {
                 throw new IllegalArgumentException(
                         "The value of " + weightInput + " is not a valid input. Input value must be 0 or 1.");
             }
-            randomTrainingWeights = weightInput == 0;
+            randomTrainingWeights = weightInput == 1;
 
-            System.out.println("Enter the maximum number of training epochs:");
+            System.out.println("Enter the maximum number of training epochs [1, inf):");
             maximumNumberOfTrainingEpochs = Integer.parseInt(globalScanner.nextLine());
             if (maximumNumberOfTrainingEpochs <= 0) {
                 throw new IllegalArgumentException("The value of " + maximumNumberOfTrainingEpochs
                         + " is not a valid input. Input value must be an integer greater than 0.");
             }
 
-            System.out.println("Enter a file name to save the trained weight values:");
+            System.out.println("Enter a file name to save the trained weight values (string):");
             outputTrainedWeightsFileName = globalScanner.nextLine();
 
-            System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0:");
+            System.out.println("Enter the learning rate alpha from 0 to 1 but not including 0 (0, 1]:");
             learningRate = Double.parseDouble(globalScanner.nextLine());
             if (learningRate <= 0.0 || learningRate > 1.0) {
                 throw new IllegalArgumentException("The value of " + learningRate
                         + " is not a valid input. Input value must be a double between (0, 1]");
             }
 
-            System.out.println("Enter the threshold theta:");
+            System.out.println("Enter the threshold theta [0, inf):");
             thresholdTheta = Double.parseDouble(globalScanner.nextLine());
+            if (thresholdTheta < 0) {
+                throw new IllegalArgumentException("The value of " + thresholdTheta
+                        + " is not a valid input. Input value must be a double greater than or equal to 0.");
+            }
 
-            System.out.println("Enter the threshold to be used for measuring weight changes:");
-            thresholdForWeightChanges =  Double.parseDouble(globalScanner.nextLine());
+            System.out.println("Enter the threshold to be used for measuring weight changes (0.0, inf]:");
+            thresholdForWeightChanges = Double.parseDouble(globalScanner.nextLine());
             if (thresholdForWeightChanges <= 0.0) {
                 throw new IllegalArgumentException("The value of " + thresholdForWeightChanges
                         + " is not a valid input. Input value must be a double greater than 0.");
             }
 
         } catch (Exception e) {
-            System.out.println("\n" + e.getMessage());
             return false;
         }
 
@@ -214,33 +217,38 @@ public class proj1 {
         return true;
     }
 
+    private static String readFirstLineEntry(BufferedReader br) throws IOException {
+        return br.readLine().trim().split("\\s+")[0];
+    }
+
     private static boolean readInTrainingPairs() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(inputTrainingDataFileName));
 
-            inputRowDimensions = Integer.parseInt(br.readLine());
-            inputColumnDimensions = Integer.parseInt(br.readLine());
-            outputDimensions = Integer.parseInt(br.readLine());
-            numberOfTrainingPairs = Integer.parseInt(br.readLine());
+            inputRowDimensions = Integer.parseInt(readFirstLineEntry(br));
+            inputColumnDimensions = Integer.parseInt(readFirstLineEntry(br));
+            outputDimensions = Integer.parseInt(readFirstLineEntry(br));
+            numberOfTrainingPairs = Integer.parseInt(readFirstLineEntry(br));
 
             trainingPairs = new TrainingPair[numberOfTrainingPairs];
 
             for (int trainingPairIndex = 0; trainingPairIndex < numberOfTrainingPairs; trainingPairIndex++) {
-                // Should be empty line before actual data
+                // Consume empty line before actual data
                 br.readLine();
+
                 TrainingPair tp = new TrainingPair(inputRowDimensions, inputColumnDimensions, outputDimensions);
                 trainingPairs[trainingPairIndex] = tp;
 
                 // Extract the input pattern for the training pair
                 for (int inputRow = 0; inputRow < inputRowDimensions; inputRow++) {
-                    String[] inputRowValues = br.readLine().split("\\s+");
+                    String[] inputRowValues = br.readLine().trim().split("\\s+");
 
                     for (int inputColumn = 0; inputColumn < inputColumnDimensions; inputColumn++) {
                         int inputValue = Integer.parseInt(inputRowValues[inputColumn]);
-
+                        
                         if (inputValue != 1 && inputValue != -1) {
                             throw new IllegalArgumentException(
-                                    "Unable to parse dataset because it contained an illegal value of " + inputValue
+                                    "Unable to parse training dataset because it contained an illegal value of " + inputValue
                                             + " in the training set");
                         }
 
@@ -248,36 +256,37 @@ public class proj1 {
                     }
                 }
 
-                // Should be an empty line between input & output pair
+                // Consume empty line between input & output pair
                 br.readLine();
 
                 // Extract the output pattern for the training pair
-                String[] outputValues = br.readLine().split("\\s+");
-                for (int outputDimensions = 0; outputDimensions < outputDimensions; outputDimensions++) {
-                    int outputValue = Integer.parseInt(outputValues[outputDimensions]);
+                String[] outputValues = br.readLine().trim().split("\\s+");
 
-                    tp.outputClassification.values[outputDimensions] = outputValue;
+                for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
+                    int outputValue = Integer.parseInt(outputValues[outputDimension]);
+                    
+                    tp.outputClassification.values[outputDimension] = outputValue;
                 }
 
-                // Skip over text line from input (e.g. A1, C3, etc...)
+                // Consume text line after output (e.g. A1, C3)
                 br.readLine();
             }
 
             br.close();
         } catch (FileNotFoundException error) {
             System.out.println(
-                    "Unable to parse dataset because the file for inputTrainingDataFileName cannot be opened (FileNotFoundException)");
+                    "Unable to parse training dataset because the file for inputTrainingDataFileName cannot be opened (FileNotFoundException)");
             return false;
         } catch (IOException error) {
             System.out.println(
-                    "Unable to parse dataset because the bufferReader wasn't able to read the file (IOException)");
+                    "Unable to parse training dataset because the bufferReader wasn't able to read the file (IOException)");
             return false;
         } catch (NumberFormatException error) {
             System.out.println(
-                    "Unable to parse dataset because the an entry in the dataset wasn't able to be converted a number (NumberFormatException)");
+                    "Unable to parse training dataset because the an entry in the dataset wasn't able to be converted a number (NumberFormatException)");
             return false;
         } catch (Exception e) {
-            System.out.println("Unable to parse dataset");
+            System.out.println("Unable to parse training dataset");
             return false;
         }
 
@@ -307,6 +316,7 @@ public class proj1 {
                 int[] inputVector = tp.getFlattenedInputVector();
                 int[] outputVector = tp.outputClassification.values;
 
+                System.out.println("New training pair");
                 for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
                     // Net input = Y in = B(j) + W(j,i) * X(j,i)
                     double Yin = bias[outputDimension];
@@ -320,11 +330,13 @@ public class proj1 {
                     int calculatedOutput = 0;
                     if (Yin > thresholdTheta) {
                         calculatedOutput = 1;
-                    } else if (Yin < thresholdTheta) {
+                    } else if (Yin < -thresholdTheta) {
                         calculatedOutput = -1;
                     }
 
                     int expectedOutput = outputVector[outputDimension];
+
+                    System.out.println("\tExpected " + expectedOutput + " got " + calculatedOutput);
 
                     // Expected didn't meet calcualted output, so update bias and weights
                     if (calculatedOutput != expectedOutput) {
@@ -346,9 +358,43 @@ public class proj1 {
             }
 
             if (maxEpochWeightChange < thresholdForWeightChanges) {
-                System.out.println("Network converged early at epoch " + epoch);
+                System.out.println("Network converged early at epoch " + epoch + " with a max change of " + maxEpochWeightChange + " and threshold " + thresholdForWeightChanges);
                 break;
             }
+        }
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(outputTrainedWeightsFileName))) {
+
+            pw.println(inputRowDimensions + " // row dimension of input pattern");
+            pw.println(inputColumnDimensions + " // column dimension of input pattern");
+            pw.println(outputDimensions + " // dimension of output pattern");
+            pw.println(numberOfTrainingPairs + " // // number of testing pairs");
+
+            pw.println(learningRate + " // learning rate");
+            pw.println(thresholdTheta + " // threshold theta");
+            pw.println(thresholdForWeightChanges + " // threshold for weight changes");
+
+            pw.println();
+
+            for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
+                for (int totalInputDimension = 0; totalInputDimension < totalInputDimensions; totalInputDimension++) {
+                    pw.print(weights[outputDimension][totalInputDimension] + " ");
+                }
+                pw.println(" // weights for output " + outputDimension);
+            }
+
+            pw.println();
+
+            for (int outputDimension = 0; outputDimension < outputDimensions; outputDimension++) {
+                pw.println(bias[outputDimension] + " // bias for output " + outputDimension);
+            }
+
+            pw.close();
+        } catch (IOException error) {
+            System.out.println(
+                    "Unable to write trained weights to file because the fileWriter wasn't able to write the file (IOException)");
+        } catch (Exception e) {
+            System.out.println("Unable to write trained weights to file");
         }
     }
 
@@ -377,7 +423,6 @@ public class proj1 {
 
         System.out.println("Input not recognized. Please input y or n");
         askRunProgramAgain();
-
     }
 
     /*
