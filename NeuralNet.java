@@ -174,7 +174,7 @@ public class NeuralNet {
 
         pw.close();
 
-        System.out.println("Successfully trained and saved neural net to the file '" + destination + "'");
+        System.out.println("\nSuccessfully trained and saved neural net to the file '" + destination + "'");
     }
 
     public void testAndSaveNet(InputOutputDataset dataset, String destination) throws IOException {
@@ -245,7 +245,7 @@ public class NeuralNet {
 
         pw.close();
 
-        System.out.println("Successfully tested the neural net and saved the results to the file '" + destination + "'");
+        System.out.println("\nSuccessfully tested the neural net and saved the results to the file '" + destination + "'");
     }
 
     private String[] readLineEntries(BufferedReader br) throws IOException {
@@ -286,15 +286,6 @@ public class NeuralNet {
         for (int od = 0; od < outputDimensions; od++) {
             bias[od] = Double.parseDouble(readLineEntries(br)[0]);
         }
-
-        System.out.println("loaded trained net ");
-        System.out.println("inputRowDimensions " + inputRowDimensions);
-        System.out.println("inputColumnDimensions " + inputColumnDimensions);
-        System.out.println("outputDimensions " + outputDimensions);
-        System.out.println("numberOfPairs " + numberOfPairs);
-        System.out.println("learningRate " + learningRate);
-        System.out.println("thresholdTheta " + thresholdTheta);
-        System.out.println("thresholdForWeightChanges " + thresholdForWeightChanges);
     }
 
 }
