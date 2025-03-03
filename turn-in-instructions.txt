@@ -1,0 +1,8 @@
+
+TURNING IN OUR FILES
+
+1. Create a directory named comp380 in your Linux account and then a subdirectory named proj1 under comp380
+2. Add all necessary files to proj1 (proj1.java, training-dataset.txt, testing-dataset.txt)
+3. Compile program & run it to ensure it runs
+4. If this all works, from inside of the proj1 directory, use the turnin script & turn in the project to project: proj1 & class: comp-380-1
+* "All team members are required to submit their identical group program files. We will randomly choose one of them to test and grade."
