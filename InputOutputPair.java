@@ -1,3 +1,9 @@
+/*
+* This is a helper file to proj1.java. It is a class that allows a given input with associated output vectors to be mapped together
+* Authors: Jonathan Xakellis, Joe Cox, Augusto Escudero
+* Last Modified: 3/4/2025
+*/
+
 public class InputOutputPair {
     int[][] inputVector;
     OutputClassification outputClassification;

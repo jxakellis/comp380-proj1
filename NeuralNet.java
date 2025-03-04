@@ -1,3 +1,9 @@
+/*
+* This is a helper file to proj1.java. It is a class that allows a neural net to be initialized, trained, tested, saved, and loaded
+* Authors: Jonathan Xakellis, Joe Cox, Augusto Escudero
+* Last Modified: 3/4/2025
+*/
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;

@@ -1,8 +1,10 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+/*
+* This is a helper file to proj1.java. It is class that helps read in and manipulate datasets
+* Authors: Jonathan Xakellis, Joe Cox, Augusto Escudero
+* Last Modified: 3/4/2025
+*/
 
+import java.io.*;
 public class InputOutputDataset {
     private Integer inputRowDimensions = null;
     private Integer inputColumnDimensions = null;

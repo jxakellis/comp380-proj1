@@ -2,10 +2,9 @@ import java.io.*;
 import java.util.Scanner;
 
 /*
-* TODO
-*  1) A brief summary of the program,
-2) author’s names and
-3) last date modified
+* This program allows a user to input bipolar datasets and configure a perceptron neural net to recognize patterns within the data
+* Authors: Jonathan Xakellis, Joe Cox, Augusto Escudero
+* Last Modified: 3/4/2025
 */
 
 public class proj1 {
@@ -219,59 +218,4 @@ public class proj1 {
         System.out.println("Input not recognized. Please input y or n");
         askRunProgramAgain();
     }
-
-    /*
-     * For training, the system should use the input and output data dimensions
-     * specified in its
-     * training set (see the attached sample set and page 72 of your textbook). When
-     * creating
-     * additional datasets for testing and experiments, they MUST adhere to the
-     * format
-     * specified in the attached sample datasets. Additionally, the system MUST be
-     * able to
-     * handle pattern classification problems with any data dimensions, provided the
-     * training
-     * and testing datasets have matching dimensions.
-     * For application, you will experiment with the system by deploying it on
-     * multiple datasets
-     * with comparable dimensions (see page 75 of the textbook) and save the
-     * classification
-     * results in files with the following format:
-     * Actual Output:
-     * A
-     * 1 -1 -1 -1 -1 -1 -1
-     * Classified Output:
-     * A
-     * 1 -1 -1 -1 -1 -1 -1
-     * The output files should also include the overall classification accuracy for
-     * the testing set.
-     * Notes:
-     * 1) If a network classified output lacks a single +1 or contains multiple +
-     * values, the
-     * corresponding testing letter should be marked as “undecided”.
-     * 2) The system should use a user-specified threshold to determine whether
-     * weight
-     * changes occur during training.
-     * 3) To facilitate a meaningful testing or application, the system should save
-     * some net
-     * training parameter values (e.g., the theta) in its associated weight file.
-     * Task 2: Experimental Analysis
-     * You will conduct various experiments and document your findings in detail in
-     * your
-     * project writeup:
-     * 1 System Initial Testing
-     * Train your system using a training data set (e.g., the provided sample
-     * training
-     * set) and test it on the same dataset.
-     * Evaluate whether the system correctly classifies all training samples.
-     * 2 Effect of Learning Rate and Threshold on Convergence
-     * Use a fixed testing set and evaluate the system’s convergence speed (i.e.,
-     * the
-     * numbers of epochs required to converge)
-     * Test different values for the learning rate alpha (0.25, 0.50, 0.75 and 1.00)
-     * Test different values for the threshold theta (0.00, 0.25, 0.50, 1.00, 5.00,
-     * 10.00,
-     * and 50.00).
-     * 
-     */
 }

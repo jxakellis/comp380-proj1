@@ -1,3 +1,9 @@
+/*
+* This is a helper file to proj1.java. It is a class to help track and classify output results
+* Authors: Jonathan Xakellis, Joe Cox, Augusto Escudero
+* Last Modified: 3/4/2025
+*/
+
 public class OutputClassification {
     public int[] values;
 
@@ -34,7 +40,7 @@ public class OutputClassification {
         }
 
         // Convert index to character, e.g. index 0 == a, 1 == b, 2 == c, etc...
-        classifiation = (char) ('a' + indexOfActivatedOutput) + "";
+        classifiation = (char) ('A' + indexOfActivatedOutput) + "";
 
         return classifiation;
     }
