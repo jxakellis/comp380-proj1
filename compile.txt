@@ -1,0 +1,18 @@
+Script started on Tue Mar  4 13:37:02 2025
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+[?1034hbash-3.2$ javac *.java
+bash-3.2$ ls
+InputOutputDataset.class	OutputClassification.java	results
+InputOutputDataset.java		ProgramFunction.class		testing-dataset
+InputOutputPair.class		ProgramFunction.java		training-dataset
+InputOutputPair.java		compile.txt			turn-in-instructions.txt
+NeuralNet.class			proj1$1.class			weights
+NeuralNet.java			proj1.class
+OutputClassification.class	proj1.java
+bash-3.2$ exit
+exit
+
+Script done on Tue Mar  4 13:37:15 2025

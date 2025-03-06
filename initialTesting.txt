@@ -1,0 +1,51 @@
+Script started on Tue Mar  4 13:38:44 2025
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+[?1034hbash-3.2$ java proj1
+Welcome to our first neural network – A Perceptron Net!
+1) Enter 1 to train the net on a data file
+2) Enter 2 to test the net on a data file
+3) Enter 3 to quit
+1
+Enter the training data file name (string):
+training-dataset
+Enter 0 to initialize weights to 0, enter 1 to initialize weights to random values between -0.5 and 0.5:
+1
+Enter the maximum number of training epochs [1, inf):
+100
+Enter a file name to save the trained weight values (string):
+weights
+Enter the learning rate alpha from 0 to 1 but not including 0 (0, 1]:
+0.5
+Enter the threshold theta [0, inf):
+1
+Enter the threshold to be used for measuring weight changes (0.0, inf]:
+0.00001
+Network converged early at epoch 2 with a max change of 0.0 and threshold 1.0E-5
+
+Successfully trained and saved neural net to the file 'weights'
+
+Do you want to run the program again (y for yes and n for no)?:
+y
+Welcome to our first neural network – A Perceptron Net!
+1) Enter 1 to train the net on a data file
+2) Enter 2 to test the net on a data file
+3) Enter 3 to quit
+2
+Enter the trained net weight file name:
+weights
+Enter the testing/deploying dataset file name:
+training-dataset
+Enter a file name to save the testing/deploying results:
+results_initial_testing
+
+Successfully tested the neural net and saved the results to the file 'results_initial_testing'
+
+Do you want to run the program again (y for yes and n for no)?:
+n
+bash-3.2$ exit
+exit
+
+Script done on Tue Mar  4 13:40:18 2025
