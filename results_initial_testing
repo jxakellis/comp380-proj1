@@ -34,66 +34,17 @@ E
 -1 -1 -1 -1 1 -1 -1 
 
 Actual Output:
-F
+J
 -1 -1 -1 -1 -1 1 -1 
 Classified Output:
-F
+J
 -1 -1 -1 -1 -1 1 -1 
 
 Actual Output:
-G
+K
 -1 -1 -1 -1 -1 -1 1 
 Classified Output:
-G
--1 -1 -1 -1 -1 -1 1 
-
-Actual Output:
-A
-1 -1 -1 -1 -1 -1 -1 
-Classified Output:
-A
-1 -1 -1 -1 -1 -1 -1 
-
-Actual Output:
-B
--1 1 -1 -1 -1 -1 -1 
-Classified Output:
-B
--1 1 -1 -1 -1 -1 -1 
-
-Actual Output:
-C
--1 -1 1 -1 -1 -1 -1 
-Classified Output:
-C
--1 -1 1 -1 -1 -1 -1 
-
-Actual Output:
-D
--1 -1 -1 1 -1 -1 -1 
-Classified Output:
-D
--1 -1 -1 1 -1 -1 -1 
-
-Actual Output:
-E
--1 -1 -1 -1 1 -1 -1 
-Classified Output:
-E
--1 -1 -1 -1 1 -1 -1 
-
-Actual Output:
-F
--1 -1 -1 -1 -1 1 -1 
-Classified Output:
-F
--1 -1 -1 -1 -1 1 -1 
-
-Actual Output:
-G
--1 -1 -1 -1 -1 -1 1 
-Classified Output:
-G
+K
 -1 -1 -1 -1 -1 -1 1 
 
 Actual Output:
@@ -132,17 +83,66 @@ E
 -1 -1 -1 -1 1 -1 -1 
 
 Actual Output:
-F
+J
 -1 -1 -1 -1 -1 1 -1 
 Classified Output:
-F
+J
 -1 -1 -1 -1 -1 1 -1 
 
 Actual Output:
-G
+K
 -1 -1 -1 -1 -1 -1 1 
 Classified Output:
-G
+K
+-1 -1 -1 -1 -1 -1 1 
+
+Actual Output:
+A
+1 -1 -1 -1 -1 -1 -1 
+Classified Output:
+A
+1 -1 -1 -1 -1 -1 -1 
+
+Actual Output:
+B
+-1 1 -1 -1 -1 -1 -1 
+Classified Output:
+B
+-1 1 -1 -1 -1 -1 -1 
+
+Actual Output:
+C
+-1 -1 1 -1 -1 -1 -1 
+Classified Output:
+C
+-1 -1 1 -1 -1 -1 -1 
+
+Actual Output:
+D
+-1 -1 -1 1 -1 -1 -1 
+Classified Output:
+D
+-1 -1 -1 1 -1 -1 -1 
+
+Actual Output:
+E
+-1 -1 -1 -1 1 -1 -1 
+Classified Output:
+E
+-1 -1 -1 -1 1 -1 -1 
+
+Actual Output:
+J
+-1 -1 -1 -1 -1 1 -1 
+Classified Output:
+J
+-1 -1 -1 -1 -1 1 -1 
+
+Actual Output:
+K
+-1 -1 -1 -1 -1 -1 1 
+Classified Output:
+K
 -1 -1 -1 -1 -1 -1 1 
 
 Overall Classification Accuracy: 100.0%
