@@ -11,6 +11,7 @@ public class InputOutputDataset {
     private Integer outputDimensions = null;
     private Integer numberOfPairs = null;
     private InputOutputPair[] pairs = null;
+    private String[] outputIndexToClassifications = null;
 
     public InputOutputDataset(String fileName) throws FileNotFoundException, IOException, NumberFormatException {
         readInDataPairs(fileName);
@@ -44,6 +45,10 @@ public class InputOutputDataset {
         return pairs;
     }
 
+    public String[] getOutputIndexToClassifications() {
+        return outputIndexToClassifications;
+    }
+
     private String[] readLineEntries(BufferedReader br) throws IOException {
         return br.readLine().trim().split("\\s+");
     }
@@ -54,6 +59,7 @@ public class InputOutputDataset {
         inputColumnDimensions = Integer.parseInt(readLineEntries(br)[0]);
         outputDimensions = Integer.parseInt(readLineEntries(br)[0]);
         numberOfPairs = Integer.parseInt(readLineEntries(br)[0]);
+        outputIndexToClassifications = new String[outputDimensions];
 
         pairs = new InputOutputPair[numberOfPairs];
 
@@ -87,15 +93,22 @@ public class InputOutputDataset {
 
             // Extract the output pattern for the training pair
             String[] outputValues = readLineEntries(br);
+            String classificationLetter = readLineEntries(br)[0].replaceAll("\\d","");
+            Integer classificationIndex = null;
 
             for (int od = 0; od < outputDimensions; od++) {
                 int outputValue = Integer.parseInt(outputValues[od]);
 
+                if (outputValue == 1 && classificationIndex == null) {
+                    classificationIndex = od;
+                }
+
                 pair.outputClassification.values[od] = outputValue;
             }
 
+            outputIndexToClassifications[classificationIndex] = classificationLetter;
+
             // Consume text line after output (e.g. A1, C3)
-            br.readLine();
         }
 
         br.close();

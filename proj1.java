@@ -42,7 +42,7 @@ public class proj1 {
             }
         } catch (Exception e) {
             System.out.println(
-                    "One or more of your inputs for the program function is invalid. Restarting the program...");
+                    "One or more of your inputs for the program function is invalid. Restarting the program..." + e.getMessage());
             askRunProgramAgain();
             return;
         }
@@ -60,7 +60,7 @@ public class proj1 {
             try {
                 trainingDataset = new InputOutputDataset(inputOutputDataFile);
             } catch (Exception e) {
-                System.out.println("Failed to read in training dataset for the program. Restarting the program...");
+                System.out.println("Failed to read in training dataset for the program. Restarting the program..." + e.getMessage());
                 askRunProgramAgain();
                 return;
             }
@@ -68,7 +68,7 @@ public class proj1 {
             try {
                 neuralNet.trainAndSaveNet(trainingDataset, resultsDestinationFile);
             } catch (Exception e) {
-                System.out.println("Failed to train and save neural net. Restarting the program...");
+                System.out.println("Failed to train and save neural net. Restarting the program..." + e.getMessage());
                 askRunProgramAgain();
                 return;
             }
@@ -78,7 +78,7 @@ public class proj1 {
             try {
                 testingDataset = new InputOutputDataset(inputOutputDataFile);
             } catch (Exception e) {
-                System.out.println("Failed to read in testing dataset for the program. Restarting the program...");
+                System.out.println("Failed to read in testing dataset for the program. Restarting the program..." + e.getMessage());
                 askRunProgramAgain();
                 return;
             }

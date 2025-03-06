@@ -26,6 +26,7 @@ public class NeuralNet {
     private Integer inputColumnDimensions;
     private Integer outputDimensions;
     private Integer numberOfPairs;
+    private String[] outputIndexToClassifications;
 
     public NeuralNet(boolean randomTrainingWeights, int maximumNumberOfEpochs, double learningRate,
             double thresholdTheta, double thresholdForWeightChanges) {
@@ -89,6 +90,7 @@ public class NeuralNet {
         inputColumnDimensions = dataset.getInputColumnDimensions();
         outputDimensions = dataset.getInputColumnDimensions();
         numberOfPairs = dataset.getNumberOfPairs();
+        outputIndexToClassifications = dataset.getOutputIndexToClassifications();
 
         // initialize weights and biases
         for (int od = 0; od < dataset.getOutputDimensions(); od++) {
@@ -178,6 +180,13 @@ public class NeuralNet {
             pw.println(bias[od] + " // bias for output " + od);
         }
 
+        pw.println();
+
+        for (int c = 0; c < outputDimensions; c++) {
+            pw.print(dataset.getOutputIndexToClassifications()[c] + " ");
+        }
+        pw.println(" // classification readable letter for index");
+
         pw.close();
 
         System.out.println("\nSuccessfully trained and saved neural net to the file '" + destination + "'");
@@ -221,8 +230,8 @@ public class NeuralNet {
                 calculatedClassification.values[od] = calculatedOutput;
             }
 
-            String actual = actualClassification.getClassification();
-            String classified = calculatedClassification.getClassification();
+            String actual = actualClassification.getClassification(outputIndexToClassifications);
+            String classified = calculatedClassification.getClassification(outputIndexToClassifications);
 
             if (actual.equals(classified)) {
                 correctCount++;
@@ -265,10 +274,12 @@ public class NeuralNet {
         inputColumnDimensions = Integer.parseInt(readLineEntries(br)[0]);
         outputDimensions = Integer.parseInt(readLineEntries(br)[0]);
         numberOfPairs = Integer.parseInt(readLineEntries(br)[0]);
+        outputIndexToClassifications = new String[outputDimensions];
 
         learningRate = Double.parseDouble(readLineEntries(br)[0]);
         thresholdTheta = Double.parseDouble(readLineEntries(br)[0]);
         thresholdForWeightChanges = Double.parseDouble(readLineEntries(br)[0]);
+        
 
         // Consume empty line
         br.readLine();
@@ -292,6 +303,15 @@ public class NeuralNet {
         for (int od = 0; od < outputDimensions; od++) {
             bias[od] = Double.parseDouble(readLineEntries(br)[0]);
         }
+
+        br.readLine();
+
+        // Output index to classif array
+        String[] classifications = readLineEntries(br);
+        for (int oi = 0; oi < outputDimensions; oi++) {
+            outputIndexToClassifications[oi] = classifications[oi];
+        }
+
     }
 
 }

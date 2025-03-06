@@ -11,7 +11,7 @@ public class OutputClassification {
         values = new int[outputDimensions];
     }
 
-    public String getClassification() {
+    public String getClassification(String[] outputIndexToClassification) {
         String classifiation = "undecided";
         Integer indexOfActivatedOutput = null;
 
@@ -39,9 +39,6 @@ public class OutputClassification {
             return classifiation;
         }
 
-        // Convert index to character, e.g. index 0 == a, 1 == b, 2 == c, etc...
-        classifiation = (char) ('A' + indexOfActivatedOutput) + "";
-
-        return classifiation;
+        return outputIndexToClassification[indexOfActivatedOutput];
     }
 }
