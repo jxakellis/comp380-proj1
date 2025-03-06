@@ -21,3 +21,5 @@
 -2.25 // bias for output 4
 -1.5 // bias for output 5
 0.0 // bias for output 6
+
+A B C D E J K  // classification readable letter for index
